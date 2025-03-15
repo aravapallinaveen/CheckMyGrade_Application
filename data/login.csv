@@ -1,0 +1,4 @@
+Email,Password,Role
+admin@mail.com,8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918,admin
+student1@mail.com,509e87a6c45ee0a3c657bf946dd6dc43d7e5502143be195280f279002e70f7d9,student
+prof1@university.com,9beb8428008fba903a067a9ce23828f5c4196e74cabaf7131233bfee3aa3a991,professor
