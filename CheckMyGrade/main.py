@@ -10,6 +10,7 @@ def main():
     user_role = None
     email = None
     login_user = LoginUser()  # Create an instance of LoginUser
+    grades = Grades()  # Create an instance of Grades
 
     while True:
         if not logged_in:
@@ -239,13 +240,17 @@ def manage_students():
             print("❌ Invalid choice! Please enter a valid option.")
 
 def manage_courses():
+    grades = Grades()  # Create an instance of Grades
     while True:
         print("\nCourse Management")
         print("1. Add Course")
         print("2. Delete Course")
         print("3. Modify Course")
         print("4. View Courses")
-        print("5. Back to Main Menu")
+        print("5. View Average Score")
+        print("6. View Median Score")
+        print("7. Generate Course Report")
+        print("8. Back to Main Menu")
 
         choice = input("Enter choice: ")
 
@@ -275,6 +280,32 @@ def manage_courses():
             course.display_courses()
 
         elif choice == "5":
+            course_id = input("Enter Course ID: ")
+            avg_score = grades.average_score(course_id)
+            if avg_score is not None:
+                print(f"Average score for course {course_id}: {avg_score}")
+            else:
+                print("No scores found for this course.")
+
+        elif choice == "6":
+            course_id = input("Enter Course ID: ")
+            med_score = grades.median_score(course_id)
+            if med_score is not None:
+                print(f"Median score for course {course_id}: {med_score}")
+            else:
+                print("No scores found for this course.")
+
+        elif choice == "7":
+            course_id = input("Enter Course ID: ")
+            report = grades.generate_report('Course ID', course_id)
+            if report:
+                print(f"Report for course {course_id}:")
+                for entry in report:
+                    print(entry)
+            else:
+                print("No data found for this course.")
+
+        elif choice == "8":
             break
 
         else:
@@ -282,6 +313,7 @@ def manage_courses():
 
 def manage_professors():
     professor_manager = Professor()  # Create an instance of Professor
+    grades = Grades()  # Create an instance of Grades
     while True:
         print("\n📚 Professor Management")
         print("1. Add Professor")
@@ -289,7 +321,8 @@ def manage_professors():
         print("3. Modify Professor")
         print("4. View Professors")
         print("5. Show Course Details by Professor")
-        print("6. Back to Main Menu")
+        print("6. Generate Professor Report")
+        print("7. Back to Main Menu")
 
         choice = input("Enter choice: ")
 
@@ -323,6 +356,23 @@ def manage_professors():
             professor_manager.show_course_details_by_professor(professor_id)
 
         elif choice == "6":
+            professor_id = input("Enter Professor ID: ")
+            report = grades.generate_professor_report(professor_id)
+
+            if "error" in report:
+                print("❌ No data found for this professor.")
+            elif report["Students"]:
+                print(f"\n📊 Report for Professor {professor_id} ({report['Name']}):")
+                print(f"📚 Course ID: {report['Course ID']}")
+                print(f"{'Email':<30} {'Marks':<10} {'Grade':<10}")
+                print("-" * 50)
+                for entry in report["Students"]:
+                    print(f"{entry['Student Email']:<30} {entry['Marks']:<10} {entry['Grade']:<10}")
+            else:
+                print(f"📊 Professor {report['Name']} has no students enrolled in Course ID: {report['Course ID']}.")
+
+
+        elif choice == "7":
             break
 
         else:

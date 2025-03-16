@@ -3,6 +3,8 @@ import os
 
 class Professor:
     PROFESSOR_FILE = "data/professors.csv"
+    COURSE_FILE = "data/courses.csv"
+
 
     def __init__(self, professor_id=None, name=None, rank=None, course_id=None):
         self.professor_id = professor_id
@@ -80,11 +82,30 @@ class Professor:
         print("------------------------------------------------------------")
 
     def show_course_details_by_professor(self, professor_id):
-        professors = self.load_professors()
-        professor = next((p for p in professors if p.professor_id == professor_id), None)
+        course_id = None
+        with open(self.PROFESSOR_FILE, 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['Professor ID'] == professor_id:
+                    print(f"Name: {row['Name']}")
+                    print(f"Rank: {row['Rank']}")
+                    course_id = row['Course ID']  # ✅ Store Course ID
+                    break  # ✅ Exit loop after finding professor
 
-        if not professor:
-            print(f"⚠ No professor found with ID {professor_id}")
+                
+        if not course_id:
+            print("❌ Professor not found with this ID.")
             return
 
-        print(f"\n📌 Professor {professor.name} (ID: {professor.professor_id}) is teaching Course ID: {professor.course_id}")
+        #🔍 Step 2: Find Course Details in `courses.csv`
+        with open(self.COURSE_FILE, 'r') as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                if row['Course ID'] == course_id:
+                    print("\n📚 Course Details:")
+                    print(f"Course ID: {row['Course ID']}")
+                    print(f"Course Name: {row['Course Name']}")
+                    print(f"Description: {row['Description']}")
+                    return
+
+        print("❌ Course details not found.")        
