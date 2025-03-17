@@ -102,33 +102,3 @@ class Grades:
                 return 'D'
             else:
                 return 'F'
-
-
-    def generate_report(self, key, value):
-        """Generate a report based on a given key (e.g., Course ID)."""
-        report_data = []
-
-        try:
-            with open(self.students_file, 'r', encoding="utf-8") as file:
-                reader = csv.DictReader(file)
-                
-                for row in reader:
-                    if row[key].strip() == value.strip():  # ✅ Match Course ID exactly
-                        report_data.append({
-                            "Student Email": row["Email"],
-                            "First Name": row["First Name"],
-                            "Last Name": row["Last Name"],
-                            "Marks": row["Marks"],
-                            "Grade": row["Grade"]
-                        })
-
-        except FileNotFoundError:
-            print("❌ Error: Students file not found!")
-            return None
-        except KeyError:
-            print(f"❌ Error: Key '{key}' not found in CSV file!")
-            return None
-
-        return report_data if report_data else None  # ✅ Return None if no data found
-
-    

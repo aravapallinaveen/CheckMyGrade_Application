@@ -50,7 +50,6 @@ class StudentManager:
 
     def add_student(self, email, first_name, last_name, course_id, marks):
         try:
-            marks = int(marks)
             grade = Grades().calculate_grade(marks)
             with open(self.file_path, 'a', newline='') as file:
                 writer = csv.writer(file)

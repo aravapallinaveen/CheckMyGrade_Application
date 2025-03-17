@@ -203,7 +203,7 @@ def manage_students():
 
             first_name = input("Enter New First Name (leave blank to keep same): ")
             last_name = input("Enter New Last Name (leave blank to keep same): ")
-            marks = int(input("Enter New Marks (leave blank to keep same): "))
+            marks = input("Enter New Marks (leave blank to keep same): ")
 
             student_manager.modify_student(email, course_id,
                                            first_name or None, 
